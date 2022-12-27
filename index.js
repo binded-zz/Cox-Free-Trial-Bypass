@@ -20,6 +20,11 @@ const argv = require("yargs")
     type: "boolean",
     description: "Run with debug output",
   })
+  .option("agent", {
+    alias: "a",
+    type: "boolean",
+    description: "Run with User Agent output",
+  })
   .option("timeout", {
     alias: "t",
     default: 60000,
@@ -184,7 +189,7 @@ const emailMixer = (firstName, lastName) => {
         })();
       });
 
-      if (argv.debug) {
+      if (argv.agent) {
         console.log("Using usere-agent:", userAgent);
       }
 
