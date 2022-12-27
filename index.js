@@ -23,7 +23,17 @@ const argv = require("yargs")
   .option("agent", {
     alias: "a",
     type: "boolean",
-    description: "Run with User Agent output",
+    description: "Run with user Agent output",
+  })
+  .option("screenshots", {
+    alias: "s",
+    type: "boolean",
+    description: "Run with screen shots of web site",
+  })
+   .option("pagetext", {
+    alias: "p",
+    type: "boolean",
+    description: "Run with page text output",
   })
   .option("timeout", {
     alias: "t",
@@ -31,7 +41,7 @@ const argv = require("yargs")
     description: "Time to wait for page loads",
   }).argv;
 
-const cmd = `
+  const cmd = `
   sudo systemctl stop NetworkManager.service && \
   sudo ifconfig "${argv.iface}" down && \
   sudo macchanger -a "${argv.iface}" && \
@@ -161,7 +171,7 @@ const emailMixer = (firstName, lastName) => {
         }
       );
 
-      if (argv.debug) {
+      if (argv.screenshots) {
         await page.screenshot({
           path: path.resolve(__dirname) + "/landing.jpeg",
           type: "jpeg",
@@ -202,12 +212,12 @@ const emailMixer = (firstName, lastName) => {
         "table #trial_request_voucher_form_firstName",
         firstName,
         {
-          delay: rand(100, 300),
+          delay: rand(100, 200),
         }
       );
 
       await page.type("table #trial_request_voucher_form_lastName", lastName, {
-        delay: rand(100, 300),
+        delay: rand(100, 200),
       });
 
       await page.waitForSelector("table #trial_request_voucher_form_isp");
@@ -222,7 +232,7 @@ const emailMixer = (firstName, lastName) => {
         "table #trial_request_voucher_form_email",
         emailMixer(firstName, lastName),
         {
-          delay: rand(100, 300),
+          delay: rand(100, 200),
         }
       );
 
@@ -257,7 +267,7 @@ const emailMixer = (firstName, lastName) => {
         })();
       });
 
-      if (argv.debug) {
+      if (argv.pagetext) {
         console.log("[DEBUG]: pageText:", pageText);
       }
 
@@ -270,9 +280,9 @@ const emailMixer = (firstName, lastName) => {
           message: "Wifi Connected Successfully",
         });
 
-        console.log("Wifi Connected Successfully", t);
+        console.log("Wifi Connected Successfully", t,);
 
-        if (argv.debug) {
+        if (argv.screenshots) {
           await page.screenshot({
             path: path.resolve(__dirname) + "/result.jpeg",
             type: "jpeg",
