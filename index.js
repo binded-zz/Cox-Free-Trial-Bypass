@@ -28,12 +28,12 @@ const argv = require("yargs")
 
 const cmd = `
   macchanger -s "${argv.iface}" && \
-  sudo service network-manager stop && \
+  sudo systemctl stop NetworkManager.service && \
   sudo ifconfig "${argv.iface}" down && \
   sudo macchanger -a "${argv.iface}" && \
   macchanger -s "${argv.iface}" && \
   sudo ifconfig "${argv.iface}" up && \
-  sudo service network-manager start && \
+  sudo systemctl start NetworkManager.service && \
   sleep 5
 `;
 
