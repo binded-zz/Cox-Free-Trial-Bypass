@@ -280,7 +280,7 @@ const emailMixer = (firstName, lastName) => {
           message: "Wifi Connected Successfully",
         });
 
-        console.log("Wifi Connected Successfully", t,);
+        console.log("Wifi Connected Successfully", t);
 
         if (argv.screenshots) {
           await page.screenshot({
