@@ -23,7 +23,7 @@ const argv = require("yargs")
   .option("agent", {
     alias: "a",
     type: "boolean",
-    description: "Run with user Agent output",
+    description: "Run with usere-agent output",
   })
   .option("screenshots", {
     alias: "s",
@@ -40,7 +40,6 @@ const argv = require("yargs")
     default: 60000,
     description: "Time to wait for page loads",
   }).argv;
-
   const cmd = `
   sudo systemctl stop NetworkManager.service && \
   sudo ifconfig "${argv.iface}" down && \
