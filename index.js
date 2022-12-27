@@ -27,14 +27,12 @@ const argv = require("yargs")
   }).argv;
 
 const cmd = `
-  macchanger -s "${argv.iface}" && \
   sudo systemctl stop NetworkManager.service && \
   sudo ifconfig "${argv.iface}" down && \
   sudo macchanger -a "${argv.iface}" && \
-  macchanger -s "${argv.iface}" && \
   sudo ifconfig "${argv.iface}" up && \
   sudo systemctl start NetworkManager.service && \
-  sleep 5
+  sleep 3
 `;
 
 async function isConnected() {
