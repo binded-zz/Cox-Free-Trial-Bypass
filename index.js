@@ -138,13 +138,14 @@ const emailMixer = (firstName, lastName) => {
   };
 
   sh.exec(cmd, async (code, output) => {
-    if (argv.notify) { 
-    notifier.notify({
+      if (argv.notify) {
+      notifier.notify({
       icon: path.join(__dirname, "wifi.png"),
       title: "Cox Wifi Connecting...",
       message: "Attempting to connect to Cox Wifi.",
     });
     }
+    
     await waitTillOnline();
 
     if (argv.debug) {
@@ -279,14 +280,16 @@ const emailMixer = (firstName, lastName) => {
 
       if (pageText.toLowerCase().includes("you are now connected")) {
         let t = new Date().toLocaleString();
-          if(argv.notify) {
-        notifier.notify({
+
+        if (argv.notify) {
+          notifier.notify({
           icon: path.join(__dirname, "wifi.png"),
           title: "Cox Wifi Connected",
           message: "Wifi Connected Successfully",
         });
-          }
-        console.log("Wifi Connected Successfully", t);
+        }
+
+        console.log("Wifi Connected Successfully", t \n);
 
         if (argv.screenshots) {
           await page.screenshot({
@@ -294,7 +297,6 @@ const emailMixer = (firstName, lastName) => {
             type: "jpeg",
             quality: 100,
           });
-          
           console.log(
             "[DEBUG]: Result page screenshot: ",
             path.resolve(__dirname) + "/result.jpeg"
@@ -313,8 +315,9 @@ const emailMixer = (firstName, lastName) => {
           "[DEBUG]: Error screenshot: ",
           path.resolve(__dirname) + "/error-result.jpeg"
         );
+
         if (argv.notify) {
-        notifier.notify({
+          notifier.notify({
           icon: path.join(__dirname, "error.png"),
           title: "Error",
           message: "Error, Cox Wifi failed to connect, please check output.",
