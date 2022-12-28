@@ -289,7 +289,7 @@ const emailMixer = (firstName, lastName) => {
         });
         }
 
-        console.log("Wifi Connected Successfully", t \n);
+        console.log("Wifi Connected Successfully", t);
 
         if (argv.screenshots) {
           await page.screenshot({
@@ -297,6 +297,7 @@ const emailMixer = (firstName, lastName) => {
             type: "jpeg",
             quality: 100,
           });
+          
           console.log(
             "[DEBUG]: Result page screenshot: ",
             path.resolve(__dirname) + "/result.jpeg"
