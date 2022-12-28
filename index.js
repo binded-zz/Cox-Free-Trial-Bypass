@@ -5,7 +5,7 @@ const random_useragent = require("random-useragent");
 const fs = require("fs");
 const path = require("path");
 const randomMac = require("random-mac");
-//const notifier = require("node-notifier");
+const notifier = require("node-notifier");
 const util = require("util");
 const dns = require("dns");
 const wifi = require("node-wifi");
@@ -25,21 +25,27 @@ const argv = require("yargs")
     type: "boolean",
     description: "Run with usere-agent output",
   })
+  .option("notify", {
+    alias: "n",
+    type: "boolean",
+    description: "Run with system graphic notice",
+  })
+  .option("pagetext", {
+    alias: "p",
+    type: "boolean",
+    description: "Run with page text output",
+  })
   .option("screenshots", {
     alias: "s",
     type: "boolean",
     description: "Run with screen shots of web site",
-  })
-   .option("pagetext", {
-    alias: "p",
-    type: "boolean",
-    description: "Run with page text output",
   })
   .option("timeout", {
     alias: "t",
     default: 60000,
     description: "Time to wait for page loads",
   }).argv;
+
   const cmd = `
   sudo systemctl stop NetworkManager.service && \
   sudo ifconfig "${argv.iface}" down && \
@@ -132,12 +138,13 @@ const emailMixer = (firstName, lastName) => {
   };
 
   sh.exec(cmd, async (code, output) => {
-//    notifier.notify({
-//      icon: path.join(__dirname, "wifi.png"),
-//      title: "Cox Wifi Connecting...",
-//      message: "Attempting to connect to Cox Wifi.",
-//    });
-
+    if (argv.notify) { 
+    notifier.notify({
+      icon: path.join(__dirname, "wifi.png"),
+      title: "Cox Wifi Connecting...",
+      message: "Attempting to connect to Cox Wifi.",
+    });
+    }
     await waitTillOnline();
 
     if (argv.debug) {
@@ -272,13 +279,13 @@ const emailMixer = (firstName, lastName) => {
 
       if (pageText.toLowerCase().includes("you are now connected")) {
         let t = new Date().toLocaleString();
-
-//        notifier.notify({
-//          icon: path.join(__dirname, "wifi.png"),
-//          title: "Cox Wifi Connected",
-//          message: "Wifi Connected Successfully",
-//        });
-
+          if(argv.notify) {
+        notifier.notify({
+          icon: path.join(__dirname, "wifi.png"),
+          title: "Cox Wifi Connected",
+          message: "Wifi Connected Successfully",
+        });
+          }
         console.log("Wifi Connected Successfully", t);
 
         if (argv.screenshots) {
@@ -287,7 +294,7 @@ const emailMixer = (firstName, lastName) => {
             type: "jpeg",
             quality: 100,
           });
-
+          
           console.log(
             "[DEBUG]: Result page screenshot: ",
             path.resolve(__dirname) + "/result.jpeg"
@@ -306,12 +313,13 @@ const emailMixer = (firstName, lastName) => {
           "[DEBUG]: Error screenshot: ",
           path.resolve(__dirname) + "/error-result.jpeg"
         );
-
-//        notifier.notify({
-//          icon: path.join(__dirname, "error.png"),
-//          title: "Error",
-//          message: "Error, Cox Wifi failed to connect, please check output.",
-//        });
+        if (argv.notify) {
+        notifier.notify({
+          icon: path.join(__dirname, "error.png"),
+          title: "Error",
+          message: "Error, Cox Wifi failed to connect, please check output.",
+        });
+        }
       }
 
       await browser.close();
