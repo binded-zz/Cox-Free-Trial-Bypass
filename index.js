@@ -12,7 +12,7 @@ const wifi = require("node-wifi");
 const argv = require("yargs")
   .option("iface", {
     alias: "i",
-    describe: "Interfaceto use",
+    describe: "Interface to use",
     demandOption: true,
   })
   .option("debug", {
