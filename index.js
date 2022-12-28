@@ -5,7 +5,7 @@ const random_useragent = require("random-useragent");
 const fs = require("fs");
 const path = require("path");
 const randomMac = require("random-mac");
-const notifier = require("node-notifier");
+//const notifier = require("node-notifier");
 const util = require("util");
 const dns = require("dns");
 const wifi = require("node-wifi");
@@ -132,11 +132,11 @@ const emailMixer = (firstName, lastName) => {
   };
 
   sh.exec(cmd, async (code, output) => {
-    notifier.notify({
-      icon: path.join(__dirname, "wifi.png"),
-      title: "Cox Wifi Connecting...",
-      message: "Attempting to connect to Cox Wifi.",
-    });
+//    notifier.notify({
+//      icon: path.join(__dirname, "wifi.png"),
+//      title: "Cox Wifi Connecting...",
+//      message: "Attempting to connect to Cox Wifi.",
+//    });
 
     await waitTillOnline();
 
@@ -273,11 +273,11 @@ const emailMixer = (firstName, lastName) => {
       if (pageText.toLowerCase().includes("you are now connected")) {
         let t = new Date().toLocaleString();
 
-        notifier.notify({
-          icon: path.join(__dirname, "wifi.png"),
-          title: "Cox Wifi Connected",
-          message: "Wifi Connected Successfully",
-        });
+//        notifier.notify({
+//          icon: path.join(__dirname, "wifi.png"),
+//          title: "Cox Wifi Connected",
+//          message: "Wifi Connected Successfully",
+//        });
 
         console.log("Wifi Connected Successfully", t);
 
@@ -307,11 +307,11 @@ const emailMixer = (firstName, lastName) => {
           path.resolve(__dirname) + "/error-result.jpeg"
         );
 
-        notifier.notify({
-          icon: path.join(__dirname, "error.png"),
-          title: "Error",
-          message: "Error, Cox Wifi failed to connect, please check output.",
-        });
+//        notifier.notify({
+//          icon: path.join(__dirname, "error.png"),
+//          title: "Error",
+//          message: "Error, Cox Wifi failed to connect, please check output.",
+//        });
       }
 
       await browser.close();
