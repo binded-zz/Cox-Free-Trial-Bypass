@@ -46,6 +46,7 @@ const argv = require("yargs")
     description: "Time to wait for page loads",
   }).argv;
 
+// shell command to change the MAC address of the specified interface
   const cmd = `
   sudo systemctl stop NetworkManager.service && \
   sudo ifconfig "${argv.iface}" down && \
@@ -55,8 +56,10 @@ const argv = require("yargs")
   sleep 3
 `;
 
+// utility function to check if the device is connected to the internet
 async function isConnected() {
   try {
+    // use the 'lookupService' function from the 'dns' library to check if a connection to 8.8.8.8 on port 53 can be made
     let lookupService = util.promisify(dns.lookupService);
     let result = await lookupService("8.8.8.8", 53);
     return true;
@@ -65,6 +68,7 @@ async function isConnected() {
   }
 }
 
+// function to wait until the device is connected to the internet
 function waitTillOnline() {
   var tried = 0;
   var check = async function (cb) {
@@ -96,6 +100,7 @@ const rand = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
+// create an array of domains
 const domains = [
   "gmail.com",
   "yahoo.com",
@@ -104,6 +109,7 @@ const domains = [
   "aol.com",
 ];
 
+// utility function to pick a random element from an array
 const emailMixer = (firstName, lastName) => {
   let first = rand(0, 1)
     ? firstName + "." + lastName
@@ -178,6 +184,7 @@ const emailMixer = (firstName, lastName) => {
         }
       );
 
+      // take a screenshot of the website
       if (argv.screenshots) {
         await page.screenshot({
           path: path.resolve(__dirname) + "/landing.jpeg",
@@ -205,7 +212,7 @@ const emailMixer = (firstName, lastName) => {
           return window.navigator.userAgent;
         })();
       });
-
+      // if the 'agent' flag display to the console 
       if (argv.agent) {
         console.log("Using usere-agent:", userAgent);
       }
@@ -274,13 +281,15 @@ const emailMixer = (firstName, lastName) => {
         })();
       });
 
+      // if the 'pagetext' flag is set, log the page text to console
       if (argv.pagetext) {
         console.log("[DEBUG]: pageText:", pageText);
       }
 
       if (pageText.toLowerCase().includes("you are now connected")) {
         let t = new Date().toLocaleString();
-
+         
+        // if the 'notify' flag is set, send a system notification
         if (argv.notify) {
           notifier.notify({
           icon: path.join(__dirname, "wifi.png"),
@@ -291,6 +300,7 @@ const emailMixer = (firstName, lastName) => {
 
         console.log("Wifi Connected Successfully", t);
 
+        // take a screenshot of the website
         if (argv.screenshots) {
           await page.screenshot({
             path: path.resolve(__dirname) + "/result.jpeg",
@@ -306,6 +316,7 @@ const emailMixer = (firstName, lastName) => {
 
         setTimeout(run, 60000 * 60);
       } else {
+        // take a screenshot of the website
         await page.screenshot({
           path: path.resolve(__dirname) + "/error-result.jpeg",
           type: "jpeg",
@@ -317,6 +328,7 @@ const emailMixer = (firstName, lastName) => {
           path.resolve(__dirname) + "/error-result.jpeg"
         );
 
+        // if the 'notify' flag is set, send a system notification 
         if (argv.notify) {
           notifier.notify({
           icon: path.join(__dirname, "error.png"),
@@ -326,6 +338,7 @@ const emailMixer = (firstName, lastName) => {
         }
       }
 
+      // close the browser
       await browser.close();
     } catch (err) {
       console.warn("Error: ", err);
